@@ -3,10 +3,6 @@ package com.archit.calendardaterangepicker.customviews;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -14,12 +10,17 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.viewpager.widget.ViewPager;
+
 import com.archit.calendardaterangepicker.R;
 import com.archit.calendardaterangepicker.customviews.DateRangeCalendarManager.CalendarRangeType;
 import com.archit.calendardaterangepicker.models.CalendarStyleAttrImpl;
 import com.archit.calendardaterangepicker.models.CalendarStyleAttributes;
+import com.archit.calendardaterangepicker.tools.MonthProvider;
 
-import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -147,11 +148,8 @@ public class DateRangeCalendarView extends LinearLayout implements DateRangeCale
      */
     private void setCalendarYearTitle(final int position) {
         final Calendar currentCalendarMonth = monthDataList.get(position);
-        String dateText = new DateFormatSymbols(locale).getMonths()[currentCalendarMonth.get(Calendar.MONTH)];
-        dateText = dateText.substring(0, 1).toUpperCase() + dateText.subSequence(1, dateText.length());
-
-        final String yearTitle = dateText + " " + currentCalendarMonth.get(Calendar.YEAR);
-
+        String uaMonth = new MonthProvider().provide(currentCalendarMonth.get(Calendar.MONTH));
+        final String yearTitle = uaMonth + " " + currentCalendarMonth.get(Calendar.YEAR);
         tvYearTitle.setText(yearTitle);
         tvYearTitle.setTextColor(calendarStyleAttr.getTitleColor());
     }

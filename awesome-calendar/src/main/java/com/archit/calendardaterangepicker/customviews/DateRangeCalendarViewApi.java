@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import androidx.annotation.NonNull;
 
 import java.util.Calendar;
+import java.util.List;
 
 interface DateRangeCalendarViewApi {
 
@@ -104,5 +105,5 @@ interface DateRangeCalendarViewApi {
      * @param startDate Start date
      * @param endDate   End date
      */
-    void setSelectableDateRange(@NonNull Calendar startDate, @NonNull Calendar endDate);
+    void setSelectableDateRange(@NonNull Calendar startDate, @NonNull Calendar endDate, @NonNull List<Long> disabledDates);
 }

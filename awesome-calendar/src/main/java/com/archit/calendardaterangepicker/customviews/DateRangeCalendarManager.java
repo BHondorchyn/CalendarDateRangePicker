@@ -7,7 +7,9 @@ import androidx.annotation.Nullable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 import static com.archit.calendardaterangepicker.customviews.DateRangeCalendarManager.CalendarRangeType.LAST_DATE;
@@ -22,6 +24,7 @@ class DateRangeCalendarManager {
     private Calendar mStartSelectableDate, mEndSelectableDate;
     private final static String DATE_FORMAT = "yyyyMMdd";
     static SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
+    private List<Long> disabledDates = new ArrayList<>();
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({NOT_IN_RANGE, START_DATE, MIDDLE_DATE, LAST_DATE})
@@ -32,8 +35,8 @@ class DateRangeCalendarManager {
         int LAST_DATE = 3;
     }
 
-    DateRangeCalendarManager(@NonNull final Calendar startSelectableDate, @NonNull final Calendar endSelectableDate) {
-        setSelectableDateRange(startSelectableDate, endSelectableDate);
+    DateRangeCalendarManager(@NonNull final Calendar startSelectableDate, @NonNull final Calendar endSelectableDate, @NonNull List<Long> disabledDates) {
+        setSelectableDateRange(startSelectableDate, endSelectableDate, disabledDates);
     }
 
     void setMinSelectedDate(@Nullable final Calendar minSelectedDate) {
@@ -52,11 +55,12 @@ class DateRangeCalendarManager {
         return minSelectedDate;
     }
 
-    void setSelectableDateRange(@NonNull final Calendar startDate, @NonNull final Calendar endDate) {
+    void setSelectableDateRange(@NonNull final Calendar startDate, @NonNull final Calendar endDate, @NonNull List<Long> disabledDates) {
         mStartSelectableDate = (Calendar) startDate.clone();
         CalendarRangeUtils.resetTime(mStartSelectableDate, START_DATE);
         mEndSelectableDate = (Calendar) endDate.clone();
         CalendarRangeUtils.resetTime(mEndSelectableDate, LAST_DATE);
+        this.disabledDates = disabledDates;
     }
 
     /**
@@ -104,11 +108,18 @@ class DateRangeCalendarManager {
         // It would work even if date is exactly equal to one of the end cases
         final boolean isSelectable = !(date.before(mStartSelectableDate) || date.after(mEndSelectableDate));
         if (!isSelectable && checkDateRange(date) != NOT_IN_RANGE) {
-            throw new IllegalArgumentException("Selected date can not be out of Selectable Date range." +
-                    " Date: " + CalendarRangeUtils.printDate(date) +
-                    " Min: " + CalendarRangeUtils.printDate(minSelectedDate) +
-                    " Max: " + CalendarRangeUtils.printDate(maxSelectedDate));
+            throw new IllegalArgumentException(
+                    "Selected date can not be out of Selectable Date range." +
+                            " Date: " + CalendarRangeUtils.printDate(date) +
+                            " Min: " + CalendarRangeUtils.printDate(minSelectedDate) +
+                            " Max: " + CalendarRangeUtils.printDate(maxSelectedDate)
+            );
         }
         return isSelectable;
     }
+
+    List<Long> getDisabledDates() {
+        return disabledDates;
+    }
+
 }

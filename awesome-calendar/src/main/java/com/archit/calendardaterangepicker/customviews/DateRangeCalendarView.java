@@ -24,7 +24,6 @@ import com.archit.calendardaterangepicker.tools.MonthProvider;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 public class DateRangeCalendarView extends LinearLayout implements DateRangeCalendarViewApi {
 
@@ -32,7 +31,6 @@ public class DateRangeCalendarView extends LinearLayout implements DateRangeCale
     private AppCompatImageView imgVNavLeft, imgVNavRight;
     private final List<Calendar> monthDataList = new ArrayList<>();
     private AdapterEventCalendarMonths adapterEventCalendarMonths;
-    private Locale locale;
     private ViewPager vpCalendar;
     private CalendarStyleAttributes calendarStyleAttr;
     private CalendarListener mCalendarListener;
@@ -55,7 +53,6 @@ public class DateRangeCalendarView extends LinearLayout implements DateRangeCale
     }
 
     private void initViews(final Context context, final AttributeSet attrs) {
-        locale = context.getResources().getConfiguration().locale;
         calendarStyleAttr = new CalendarStyleAttrImpl(context, attrs);
         final LayoutInflater layoutInflater = LayoutInflater.from(context);
         layoutInflater.inflate(R.layout.layout_calendar_container, this, true);
@@ -271,8 +268,8 @@ public class DateRangeCalendarView extends LinearLayout implements DateRangeCale
     /**
      * To provide month range to be shown to user. If start month is greater than end month than it will give {@link IllegalArgumentException}.<br>
      * By default it will also make selectable date range as per visible month's dates. If you want to customize the selectable date range then
-     * use {@link #setSelectableDateRange(Calendar, Calendar)}.<br><br>
-     * <b>Note:</b> Do not call this method after calling date selection method {@link #setSelectableDateRange(Calendar, Calendar)}
+     * use {@link #setSelectableDateRange(Calendar, Calendar, List)}.<br><br>
+     * <b>Note:</b> Do not call this method after calling date selection method {@link #setSelectableDateRange(Calendar, Calendar, List)}
      * / {@link #setSelectedDateRange(Calendar, Calendar)} as it will reset date selection.
      *
      * @param startMonth Start month of the calendar
@@ -329,11 +326,20 @@ public class DateRangeCalendarView extends LinearLayout implements DateRangeCale
     }
 
     @Override
-    public void setSelectableDateRange(@NonNull final Calendar startDate, @NonNull final Calendar endDate) {
+    public void setSelectableDateRange(
+            @NonNull Calendar startDate,
+            @NonNull Calendar endDate,
+            @NonNull List<Long> disabledDates
+    ) {
         if (endDate.before(startDate)) {
-            throw new IllegalArgumentException("Start date(" + startDate.getTime().toString() + ") can not be after end date(" + endDate.getTime().toString() + ").");
+            String message = "Start date(" +
+                    startDate.getTime().toString() +
+                    ") can not be after end date(" +
+                    endDate.getTime().toString() +
+                    ").";
+            throw new IllegalArgumentException(message);
         }
-        adapterEventCalendarMonths.setSelectableDateRange(startDate, endDate);
+        adapterEventCalendarMonths.setSelectableDateRange(startDate, endDate, disabledDates);
     }
 
     private boolean isDateSame(@NonNull final Calendar one, @NonNull final Calendar second) {

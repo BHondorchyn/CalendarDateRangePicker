@@ -2,15 +2,16 @@ package com.archit.calendardaterangepickerdemo;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
 
 import com.archit.calendardaterangepicker.customviews.CalendarListener;
 import com.archit.calendardaterangepicker.customviews.DateRangeCalendarView;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 
@@ -44,11 +45,11 @@ public class MainActivity extends AppCompatActivity {
         calendar.setVisibleMonthRange(startMonth, endMonth);
 
         final Calendar startDateSelectable = (Calendar) startMonth.clone();
-        startDateSelectable.add(Calendar.DATE,20);
+        startDateSelectable.add(Calendar.DATE, 20);
         final Calendar endDateSelectable = (Calendar) endMonth.clone();
         endDateSelectable.add(Calendar.DATE, -20);
         Log.d(TAG, "startDateSelectable: " + startDateSelectable.getTime().toString() + " :: endDateSelectable: " + endDateSelectable.getTime().toString());
-        calendar.setSelectableDateRange(startDateSelectable, endDateSelectable);
+        calendar.setSelectableDateRange(startDateSelectable, endDateSelectable, new ArrayList<>());
 
         final Calendar startSelectedDate = (Calendar) startDateSelectable.clone();
         startSelectedDate.add(Calendar.DATE, 10);

@@ -7,11 +7,6 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-
-import androidx.annotation.ColorInt;
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
@@ -19,6 +14,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
 import com.archit.calendardaterangepicker.R;
 import com.archit.calendardaterangepicker.customviews.DateRangeCalendarManager.CalendarRangeType;
@@ -259,7 +258,12 @@ class DateRangeMonthView extends LinearLayout {
             } else if (type == CalendarRangeType.MIDDLE_DATE) {
                 makeAsRangeDate(container);
             } else {
-                enabledDayContainer(container);
+                Long startOfADay = getStartOfADay(calendar.getTimeInMillis());
+                if (dateRangeCalendarManager.getDisabledDates().contains(startOfADay)) {
+                    disableDayContainer(container);
+                } else {
+                    enabledDayContainer(container);
+                }
             }
             container.tvDate.setText(String.valueOf(date));
             container.tvDate.setTextSize(TypedValue.COMPLEX_UNIT_PX, calendarStyleAttr.getTextSizeDate());
@@ -400,5 +404,17 @@ class DateRangeMonthView extends LinearLayout {
             textView.setTypeface(calendarStyleAttr.getFonts());
             textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, calendarStyleAttr.getTextSizeWeek());
         }
+    }
+
+    /**
+     * To get start of a day by timestamp
+     */
+    private Long getStartOfADay(Long time) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(time);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        return calendar.getTimeInMillis();
     }
 }

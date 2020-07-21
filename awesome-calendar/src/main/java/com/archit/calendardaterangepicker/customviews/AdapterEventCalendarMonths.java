@@ -2,15 +2,17 @@ package com.archit.calendardaterangepicker.customviews;
 
 import android.content.Context;
 import android.os.Handler;
-import androidx.annotation.NonNull;
-import androidx.viewpager.widget.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.viewpager.widget.PagerAdapter;
+
 import com.archit.calendardaterangepicker.R;
 import com.archit.calendardaterangepicker.models.CalendarStyleAttributes;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -23,8 +25,11 @@ class AdapterEventCalendarMonths extends PagerAdapter {
     private final DateRangeCalendarManager dateRangeCalendarManager;
     private final Handler mHandler;
 
-    AdapterEventCalendarMonths(@NonNull final Context mContext, @NonNull final List<Calendar> list,
-                               @NonNull final CalendarStyleAttributes calendarStyleAttr) {
+    AdapterEventCalendarMonths(
+            @NonNull final Context mContext,
+            @NonNull final List<Calendar> list,
+            @NonNull final CalendarStyleAttributes calendarStyleAttr
+    ) {
         this.mContext = mContext;
         dataList = list;
         this.calendarStyleAttr = calendarStyleAttr;
@@ -34,7 +39,7 @@ class AdapterEventCalendarMonths extends PagerAdapter {
         // Get end month and set end date of that month
         final Calendar endSelectableDate = (Calendar) list.get(list.size() - 1).clone();
         endSelectableDate.set(Calendar.DAY_OF_MONTH, endSelectableDate.getActualMaximum(Calendar.DAY_OF_MONTH));
-        dateRangeCalendarManager = new DateRangeCalendarManager(startSelectableDate, endSelectableDate);
+        dateRangeCalendarManager = new DateRangeCalendarManager(startSelectableDate, endSelectableDate, new ArrayList<Long>());
         mHandler = new Handler();
     }
 
@@ -171,8 +176,12 @@ class AdapterEventCalendarMonths extends PagerAdapter {
         return calendarStyleAttr.isEditable();
     }
 
-    void setSelectableDateRange(@NonNull final Calendar startDate, @NonNull final Calendar endDate) {
-        dateRangeCalendarManager.setSelectableDateRange(startDate, endDate);
+    void setSelectableDateRange(
+            @NonNull final Calendar startDate,
+            @NonNull final Calendar endDate,
+            @NonNull List<Long> disabledDates
+    ) {
+        dateRangeCalendarManager.setSelectableDateRange(startDate, endDate, disabledDates);
         notifyDataSetChanged();
     }
 }

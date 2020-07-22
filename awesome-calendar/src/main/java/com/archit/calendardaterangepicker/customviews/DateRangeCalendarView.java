@@ -329,7 +329,7 @@ public class DateRangeCalendarView extends LinearLayout implements DateRangeCale
     public void setSelectableDateRange(
             @NonNull Calendar startDate,
             @NonNull Calendar endDate,
-            @NonNull List<Long> disabledDates
+            @NonNull List<Long> enabledDates
     ) {
         if (endDate.before(startDate)) {
             String message = "Start date(" +
@@ -339,7 +339,7 @@ public class DateRangeCalendarView extends LinearLayout implements DateRangeCale
                     ").";
             throw new IllegalArgumentException(message);
         }
-        adapterEventCalendarMonths.setSelectableDateRange(startDate, endDate, disabledDates);
+        adapterEventCalendarMonths.setSelectableDateRange(startDate, endDate, enabledDates);
     }
 
     private boolean isDateSame(@NonNull final Calendar one, @NonNull final Calendar second) {

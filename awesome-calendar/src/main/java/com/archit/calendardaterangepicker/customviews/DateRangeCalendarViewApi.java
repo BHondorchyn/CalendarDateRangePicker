@@ -105,5 +105,5 @@ interface DateRangeCalendarViewApi {
      * @param startDate Start date
      * @param endDate   End date
      */
-    void setSelectableDateRange(@NonNull Calendar startDate, @NonNull Calendar endDate, @NonNull List<Long> disabledDates);
+    void setSelectableDateRange(@NonNull Calendar startDate, @NonNull Calendar endDate, @NonNull List<Long> enabledDates);
 }

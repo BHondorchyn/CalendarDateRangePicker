@@ -12,7 +12,7 @@ public class MonthProvider {
                 newMonth = "Лютий";
                 break;
             case 2:
-                newMonth = "Березент";
+                newMonth = "Березень";
                 break;
             case 3:
                 newMonth = "Квітень";

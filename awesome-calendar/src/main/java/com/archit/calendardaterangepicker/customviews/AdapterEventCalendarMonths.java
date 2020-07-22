@@ -179,9 +179,9 @@ class AdapterEventCalendarMonths extends PagerAdapter {
     void setSelectableDateRange(
             @NonNull final Calendar startDate,
             @NonNull final Calendar endDate,
-            @NonNull List<Long> disabledDates
+            @NonNull List<Long> enabledDates
     ) {
-        dateRangeCalendarManager.setSelectableDateRange(startDate, endDate, disabledDates);
+        dateRangeCalendarManager.setSelectableDateRange(startDate, endDate, enabledDates);
         notifyDataSetChanged();
     }
 }

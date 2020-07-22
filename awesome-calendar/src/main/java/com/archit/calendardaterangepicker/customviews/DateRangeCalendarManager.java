@@ -24,7 +24,7 @@ class DateRangeCalendarManager {
     private Calendar mStartSelectableDate, mEndSelectableDate;
     private final static String DATE_FORMAT = "yyyyMMdd";
     static SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
-    private List<Long> disabledDates = new ArrayList<>();
+    private List<Long> enabledDates = new ArrayList<>();
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({NOT_IN_RANGE, START_DATE, MIDDLE_DATE, LAST_DATE})
@@ -35,8 +35,8 @@ class DateRangeCalendarManager {
         int LAST_DATE = 3;
     }
 
-    DateRangeCalendarManager(@NonNull final Calendar startSelectableDate, @NonNull final Calendar endSelectableDate, @NonNull List<Long> disabledDates) {
-        setSelectableDateRange(startSelectableDate, endSelectableDate, disabledDates);
+    DateRangeCalendarManager(@NonNull final Calendar startSelectableDate, @NonNull final Calendar endSelectableDate, @NonNull List<Long> enabledDates) {
+        setSelectableDateRange(startSelectableDate, endSelectableDate, enabledDates);
     }
 
     void setMinSelectedDate(@Nullable final Calendar minSelectedDate) {
@@ -55,12 +55,12 @@ class DateRangeCalendarManager {
         return minSelectedDate;
     }
 
-    void setSelectableDateRange(@NonNull final Calendar startDate, @NonNull final Calendar endDate, @NonNull List<Long> disabledDates) {
+    void setSelectableDateRange(@NonNull final Calendar startDate, @NonNull final Calendar endDate, @NonNull List<Long> enabledDates) {
         mStartSelectableDate = (Calendar) startDate.clone();
         CalendarRangeUtils.resetTime(mStartSelectableDate, START_DATE);
         mEndSelectableDate = (Calendar) endDate.clone();
         CalendarRangeUtils.resetTime(mEndSelectableDate, LAST_DATE);
-        this.disabledDates = disabledDates;
+        this.enabledDates = enabledDates;
     }
 
     /**
@@ -118,8 +118,8 @@ class DateRangeCalendarManager {
         return isSelectable;
     }
 
-    List<Long> getDisabledDates() {
-        return disabledDates;
+    List<Long> getEnabledDates() {
+        return enabledDates;
     }
 
 }

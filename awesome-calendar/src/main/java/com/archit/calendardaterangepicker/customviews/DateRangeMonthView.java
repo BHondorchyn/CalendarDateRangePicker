@@ -259,10 +259,10 @@ class DateRangeMonthView extends LinearLayout {
                 makeAsRangeDate(container);
             } else {
                 Long startOfADay = getStartOfADay(calendar.getTimeInMillis());
-                if (dateRangeCalendarManager.getDisabledDates().contains(startOfADay)) {
-                    disableDayContainer(container);
-                } else {
+                if (dateRangeCalendarManager.getEnabledDates().contains(startOfADay)) {
                     enabledDayContainer(container);
+                } else {
+                    disableDayContainer(container);
                 }
             }
             container.tvDate.setText(String.valueOf(date));

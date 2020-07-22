@@ -56,7 +56,6 @@ public class AwesomeTimePickerDialog extends Dialog {
     }
 
     private void initView() {
-
         setContentView(R.layout.dialog_time_picker);
 
         tvHeaderTitle = findViewById(R.id.tvHeaderTitle);
@@ -76,7 +75,6 @@ public class AwesomeTimePickerDialog extends Dialog {
     }
 
     private void setListeners() {
-
         tvDialogCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
@@ -99,7 +97,6 @@ public class AwesomeTimePickerDialog extends Dialog {
     }
 
     public void showDialog() {
-
         hours = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
         minutes = Calendar.getInstance().get(Calendar.MINUTE);
         this.show();

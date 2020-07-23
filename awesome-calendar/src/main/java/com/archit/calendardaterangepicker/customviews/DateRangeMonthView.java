@@ -63,14 +63,22 @@ class DateRangeMonthView extends LinearLayout {
         initView(context, attrs);
     }
 
-    public DateRangeMonthView(final Context context, final AttributeSet attrs, final int defStyleAttr) {
+    public DateRangeMonthView(
+            final Context context,
+            final AttributeSet attrs,
+            final int defStyleAttr
+    ) {
         super(context, attrs, defStyleAttr);
         initView(context, attrs);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public DateRangeMonthView(final Context context, final AttributeSet attrs, final int defStyleAttr,
-                              final int defStyleRes) {
+    public DateRangeMonthView(
+            final Context context,
+            final AttributeSet attrs,
+            final int defStyleAttr,
+            final int defStyleRes
+    ) {
         super(context, attrs, defStyleAttr, defStyleRes);
         initView(context, attrs);
     }
@@ -86,7 +94,6 @@ class DateRangeMonthView extends LinearLayout {
         final LinearLayout mainView = (LinearLayout) layoutInflater.inflate(R.layout.layout_calendar_month, this, true);
         llDaysContainer = mainView.findViewById(R.id.llDaysContainer);
         llTitleWeekContainer = mainView.findViewById(R.id.llTitleWeekContainer);
-
         setListeners();
     }
 
@@ -99,7 +106,6 @@ class DateRangeMonthView extends LinearLayout {
     private final OnClickListener dayClickListener = new OnClickListener() {
         @Override
         public void onClick(final View view) {
-
             if (calendarStyleAttr.isEditable()) {
                 final int key = (int) view.getTag();
                 final Calendar selectedCal = Calendar.getInstance();
@@ -184,7 +190,11 @@ class DateRangeMonthView extends LinearLayout {
      * @param month                    Month to be drawn
      * @param dateRangeCalendarManager Calendar data manager
      */
-    public void drawCalendarForMonth(final CalendarStyleAttributes calendarStyleAttr, final Calendar month, final DateRangeCalendarManager dateRangeCalendarManager) {
+    public void drawCalendarForMonth(
+            final CalendarStyleAttributes calendarStyleAttr,
+            final Calendar month,
+            final DateRangeCalendarManager dateRangeCalendarManager
+    ) {
         this.calendarStyleAttr = calendarStyleAttr;
         this.currentCalendarMonth = (Calendar) month.clone();
         this.dateRangeCalendarManager = dateRangeCalendarManager;
@@ -199,7 +209,6 @@ class DateRangeMonthView extends LinearLayout {
      * @param month Calendar month
      */
     private void drawCalendarForMonth(final Calendar month) {
-
         currentCalendarMonth = (Calendar) month.clone();
         currentCalendarMonth.set(Calendar.DATE, 1);
         CalendarRangeUtils.resetTime(currentCalendarMonth, CalendarRangeType.MIDDLE_DATE);
@@ -243,9 +252,7 @@ class DateRangeMonthView extends LinearLayout {
      * @param calendar  - Calendar obj of specific date of the month.
      */
     private void drawDayContainer(final DayContainer container, final Calendar calendar) {
-
         final int date = calendar.get(Calendar.DATE);
-
         if (currentCalendarMonth.get(Calendar.MONTH) != calendar.get(Calendar.MONTH)) {
             hideDayContainer(container);
         } else if (!dateRangeCalendarManager.isSelectableDate(calendar)) {
@@ -254,9 +261,9 @@ class DateRangeMonthView extends LinearLayout {
         } else {
             @CalendarRangeType final int type = dateRangeCalendarManager.checkDateRange(calendar);
             if (type == CalendarRangeType.START_DATE || type == CalendarRangeType.LAST_DATE) {
-                makeAsSelectedDate(container, type);
+                makeAsSelectedDate(container, type, calendar);
             } else if (type == CalendarRangeType.MIDDLE_DATE) {
-                makeAsRangeDate(container);
+                makeAsRangeDate(container, calendar);
             } else {
                 Long startOfADay = getStartOfADay(calendar.getTimeInMillis());
                 if (dateRangeCalendarManager.getEnabledDates().contains(startOfADay)) {
@@ -319,18 +326,19 @@ class DateRangeMonthView extends LinearLayout {
      * @param container - Container
      * @param stripType - Right end date, Left end date or middle
      */
-    private void makeAsSelectedDate(@NonNull final DayContainer container,
-                                    @CalendarRangeType final int stripType) {
+    private void makeAsSelectedDate(
+            @NonNull final DayContainer container,
+            @CalendarRangeType final int stripType,
+            @NonNull final Calendar calendar
+    ) {
         final RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) container.strip.getLayoutParams();
 
         final Calendar minDate = dateRangeCalendarManager.getMinSelectedDate();
         final Calendar maxDate = dateRangeCalendarManager.getMaxSelectedDate();
 
-        if (stripType == CalendarRangeType.START_DATE && maxDate != null &&
-                minDate.compareTo(maxDate) != 0) {
+        if (stripType == CalendarRangeType.START_DATE && maxDate != null && minDate.compareTo(maxDate) != 0) {
             final Drawable mDrawable = ContextCompat.getDrawable(getContext(), R.drawable.range_bg_left);
             mDrawable.setColorFilter(new PorterDuffColorFilter(calendarStyleAttr.getRangeStripColor(), FILTER_MODE));
-
             container.strip.setBackground(mDrawable);
             layoutParams.setMargins(20, 0, 0, 0);
         } else if (stripType == CalendarRangeType.LAST_DATE) {
@@ -349,7 +357,12 @@ class DateRangeMonthView extends LinearLayout {
         container.rootView.setBackgroundColor(Color.TRANSPARENT);
         container.tvDate.setTextColor(calendarStyleAttr.getSelectedDateColor());
         container.rootView.setVisibility(VISIBLE);
-        container.rootView.setOnClickListener(dayClickListener);
+        Long startOfADay = getStartOfADay(calendar.getTimeInMillis());
+        if (dateRangeCalendarManager.getEnabledDates().contains(startOfADay)) {
+            container.rootView.setOnClickListener(dayClickListener);
+        } else {
+            container.rootView.setOnClickListener(null);
+        }
     }
 
     /**
@@ -357,7 +370,10 @@ class DateRangeMonthView extends LinearLayout {
      *
      * @param container - Container
      */
-    private void makeAsRangeDate(@NonNull final DayContainer container) {
+    private void makeAsRangeDate(
+            @NonNull final DayContainer container,
+            @NonNull final Calendar calendar
+    ) {
         container.tvDate.setBackgroundColor(Color.TRANSPARENT);
         final Drawable mDrawable = ContextCompat.getDrawable(getContext(), R.drawable.range_bg);
         mDrawable.setColorFilter(new PorterDuffColorFilter(calendarStyleAttr.getRangeStripColor(), FILTER_MODE));
@@ -368,17 +384,20 @@ class DateRangeMonthView extends LinearLayout {
         final RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) container.strip.getLayoutParams();
         layoutParams.setMargins(0, 0, 0, 0);
         container.strip.setLayoutParams(layoutParams);
-        container.rootView.setOnClickListener(dayClickListener);
+        Long startOfADay = getStartOfADay(calendar.getTimeInMillis());
+        if (dateRangeCalendarManager.getEnabledDates().contains(startOfADay)) {
+            container.rootView.setOnClickListener(dayClickListener);
+        } else {
+            container.rootView.setOnClickListener(null);
+        }
     }
 
     /**
      * To remove all selection and redraw current calendar
      */
     public void resetAllSelectedViews() {
-
         dateRangeCalendarManager.setMinSelectedDate(null);
         dateRangeCalendarManager.setMaxSelectedDate(null);
-
         drawCalendarForMonth(currentCalendarMonth);
     }
 

@@ -315,9 +315,20 @@ class DateRangeMonthView extends LinearLayout {
         container.tvDate.setBackgroundColor(Color.TRANSPARENT);
         container.strip.setBackgroundColor(Color.TRANSPARENT);
         container.rootView.setBackgroundColor(Color.TRANSPARENT);
-        container.tvDate.setTextColor(calendarStyleAttr.getDefaultDateColor());
         container.rootView.setVisibility(VISIBLE);
         container.rootView.setOnClickListener(dayClickListener);
+
+        //  Logic that changes enabled circle & text colors
+        final Drawable mDrawable = ContextCompat.getDrawable(getContext(), R.drawable.green_circle);
+        int enabledCircleColor = dateRangeCalendarManager.getEnabledCircleColor();
+        int enabledTexColor = dateRangeCalendarManager.getEnabledTextColor();
+        if (mDrawable != null && enabledCircleColor != 0 && enabledTexColor != 0) {
+            mDrawable.setColorFilter(new PorterDuffColorFilter(enabledCircleColor, FILTER_MODE));
+            container.tvDate.setBackground(mDrawable);
+            container.tvDate.setTextColor(enabledTexColor);
+        } else {
+            container.tvDate.setTextColor(calendarStyleAttr.getDefaultDateColor());
+        }
     }
 
     /**

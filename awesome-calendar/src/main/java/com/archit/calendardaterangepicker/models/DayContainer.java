@@ -28,13 +28,8 @@ public class DayContainer {
     }
 
     public static int GetContainerKey(final Calendar cal) {
-//            Calendar calendar = (Calendar) cal.clone();
-//            calendar.set(Calendar.HOUR, 0);
-//            calendar.set(Calendar.MINUTE, 0);
-//            calendar.set(Calendar.SECOND, 0);
-//            String key = String.valueOf(cal.getTime().getTime());
-
         final String str = simpleDateFormat.format(cal.getTime());
-        return Integer.valueOf(str);
+        return Integer.parseInt(str);
     }
+
 }

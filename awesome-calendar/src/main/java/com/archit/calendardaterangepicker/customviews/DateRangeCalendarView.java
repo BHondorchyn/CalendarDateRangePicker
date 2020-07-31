@@ -347,4 +347,15 @@ public class DateRangeCalendarView extends LinearLayout implements DateRangeCale
                 && one.get(Calendar.MONTH) == second.get(Calendar.MONTH)
                 && one.get(Calendar.DATE) == second.get(Calendar.DATE);
     }
+
+    @Override
+    public void setEnabledCircleColor(int enabledCircleColor) {
+        adapterEventCalendarMonths.setEnabledCircleColor(enabledCircleColor);
+    }
+
+    @Override
+    public void setEnabledTextColor(int enabledTextColor) {
+        adapterEventCalendarMonths.setEnabledTextColor(enabledTextColor);
+    }
+
 }

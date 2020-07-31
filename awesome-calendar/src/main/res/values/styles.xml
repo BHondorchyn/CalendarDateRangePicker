@@ -51,8 +51,6 @@
         <item name="android:layout_height">@dimen/strip_height</item>
         <item name="android:background">@color/range_bg_color</item>
         <item name="android:layout_centerVertical">true</item>
-
-
     </style>
 
 </resources>

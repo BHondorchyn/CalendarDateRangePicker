@@ -184,4 +184,13 @@ class AdapterEventCalendarMonths extends PagerAdapter {
         dateRangeCalendarManager.setSelectableDateRange(startDate, endDate, enabledDates);
         notifyDataSetChanged();
     }
+
+    public void setEnabledCircleColor(int enabledCircleColor) {
+        dateRangeCalendarManager.setEnabledCircleColor(enabledCircleColor);
+    }
+
+    public void setEnabledTextColor(int enabledTextColor) {
+        dateRangeCalendarManager.setEnabledTextColor(enabledTextColor);
+    }
+
 }

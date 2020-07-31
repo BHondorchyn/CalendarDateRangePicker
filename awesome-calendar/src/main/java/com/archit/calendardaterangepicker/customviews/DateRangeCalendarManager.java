@@ -25,6 +25,8 @@ class DateRangeCalendarManager {
     private final static String DATE_FORMAT = "yyyyMMdd";
     static SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT, Locale.getDefault());
     private List<Long> enabledDates = new ArrayList<>();
+    private int enabledCircleColor;
+    private int enabledTextColor;
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({NOT_IN_RANGE, START_DATE, MIDDLE_DATE, LAST_DATE})
@@ -120,6 +122,22 @@ class DateRangeCalendarManager {
 
     List<Long> getEnabledDates() {
         return enabledDates;
+    }
+
+    public void setEnabledCircleColor(int enabledCircleColor) {
+        this.enabledCircleColor = enabledCircleColor;
+    }
+
+    public void setEnabledTextColor(int enabledTextColor) {
+        this.enabledTextColor = enabledTextColor;
+    }
+
+    public int getEnabledCircleColor() {
+        return enabledCircleColor;
+    }
+
+    public int getEnabledTextColor() {
+        return enabledTextColor;
     }
 
 }

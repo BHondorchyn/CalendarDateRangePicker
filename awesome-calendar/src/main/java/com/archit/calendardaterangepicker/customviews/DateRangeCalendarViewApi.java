@@ -106,4 +106,11 @@ interface DateRangeCalendarViewApi {
      * @param endDate   End date
      */
     void setSelectableDateRange(@NonNull Calendar startDate, @NonNull Calendar endDate, @NonNull List<Long> enabledDates);
+
+    //  Logic that changes enabled circle color
+    void setEnabledCircleColor(int enabledCircleColor);
+
+    //  Logic that changes enabled text color
+    void setEnabledTextColor(int enabledTextColor);
+
 }
